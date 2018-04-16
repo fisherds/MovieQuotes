@@ -26,10 +26,10 @@ public class MainActivity extends AppCompatActivity implements MovieQuoteAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements MovieQuoteAdapter
         });
 
         mAdapter = new edu.rosehulman.moviequotes.MovieQuoteAdapter(this);
-        RecyclerView view = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView view = findViewById(R.id.recycler_view);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setHasFixedSize(true);
         view.setAdapter(mAdapter);
@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity implements MovieQuoteAdapter
         builder.setTitle(getString(movieQuote == null ? R.string.dialog_add_title : R.string.dialog_edit_title));
         View view = getLayoutInflater().inflate(R.layout.dialog_add, null, false);
         builder.setView(view);
-        final EditText quoteEditText = (EditText) view.findViewById(R.id.dialog_add_quote_text);
-        final EditText movieEditText = (EditText) view.findViewById(R.id.dialog_add_movie_text);
+        final EditText quoteEditText = view.findViewById(R.id.dialog_add_quote_text);
+        final EditText movieEditText = view.findViewById(R.id.dialog_add_movie_text);
         if (movieQuote != null) {
             // pre-populate
             quoteEditText.setText(movieQuote.getQuote());

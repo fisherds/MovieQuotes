@@ -34,20 +34,6 @@ public class MovieQuoteAdapter extends RecyclerView.Adapter<MovieQuoteAdapter.Vi
         final MovieQuote movieQuote = mMovieQuotes.get(position);
         holder.mQuoteTextView.setText(movieQuote.getQuote());
         holder.mMovieTextView.setText(movieQuote.getMovie());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallback.onEdit(movieQuote);
-            }
-        });
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                remove(mMovieQuotes.get(position));
-                return true;
-            }
-        });
     }
 
     public void remove(MovieQuote movieQuote) {
@@ -76,19 +62,31 @@ public class MovieQuoteAdapter extends RecyclerView.Adapter<MovieQuoteAdapter.Vi
     }
 
     public interface Callback {
-        public void onEdit(MovieQuote movieQuote);
+        void onEdit(MovieQuote movieQuote);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         private TextView mQuoteTextView;
         private TextView mMovieTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mQuoteTextView = (TextView) itemView.findViewById(R.id.quote_text);
-            mMovieTextView = (TextView) itemView.findViewById(R.id.movie_text);
+            mQuoteTextView = itemView.findViewById(R.id.quote_text);
+            mMovieTextView = itemView.findViewById(R.id.movie_text);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            MovieQuote movieQuote = mMovieQuotes.get(getAdapterPosition());
+            mCallback.onEdit(movieQuote);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            remove(mMovieQuotes.get(getAdapterPosition()));
+            return true;
         }
     }
-
-
 }
