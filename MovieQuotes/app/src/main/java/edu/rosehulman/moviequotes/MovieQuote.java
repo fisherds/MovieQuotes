@@ -1,30 +1,43 @@
 package edu.rosehulman.moviequotes;
 
+import android.support.annotation.NonNull;
+
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.Comparator;
+import java.util.Date;
+
 /**
  * Created by Matt Boutell on 12/15/2015, based on earlier work by Dave Fisher.
  */
-public class MovieQuote {
-    private String quote;
-    private String movie;
+public class MovieQuote implements Comparable<MovieQuote> {
 
-    public MovieQuote(String quote, String movie) {
-        this.movie = movie;
-        this.quote = quote;
-    }
+  @Exclude
+  public String id;
 
-    public String getQuote() {
-        return quote;
-    }
+  public String quote;
+  public String movie;
 
-    public void setQuote(String quote) {
-        this.quote = quote;
-    }
+  @ServerTimestamp
+  public Date created;
 
-    public String getMovie() {
-        return movie;
-    }
+  public MovieQuote() {
+    // Required.  Do not remove.
+  }
 
-    public void setMovie(String movie) {
-        this.movie = movie;
+  public MovieQuote(String quote, String movie) {
+    this.movie = movie;
+    this.quote = quote;
+  }
+
+  public int compareTo(@NonNull MovieQuote o) {
+    if (this.created != null && o.created != null){
+      return -created.compareTo(o.created);
+    } else if (this.created == null){
+      return -1;
+    } else {
+      return 1;
     }
+  }
 }
