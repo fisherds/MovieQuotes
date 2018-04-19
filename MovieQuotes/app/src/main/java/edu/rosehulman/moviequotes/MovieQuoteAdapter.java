@@ -18,11 +18,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by Matt Boutell on 12/15/2015.
+ * Controls the RecyclerView
  */
 public class MovieQuoteAdapter extends RecyclerView.Adapter<MovieQuoteAdapter.ViewHolder> {
 
@@ -55,13 +54,11 @@ public class MovieQuoteAdapter extends RecyclerView.Adapter<MovieQuoteAdapter.Vi
               switch (dc.getType()) {
                 case ADDED:
                   Log.d(Constants.TAG, "New movie quote: " + dc.getDocument().getData());
-                  MovieQuote quote = dc.getDocument().toObject(MovieQuote.class);
-                  quote.id = dc.getDocument().getId();
-                  mMovieQuotes.add(quote);
+                  mMovieQuotes.add(MovieQuote.covertSnapshot(dc.getDocument()));
                   break;
                 case MODIFIED:
                   Log.d(Constants.TAG, "Modified movie quote: " + dc.getDocument().getData());
-                  MovieQuote modifiedQuote = dc.getDocument().toObject(MovieQuote.class);
+                  MovieQuote modifiedQuote = MovieQuote.covertSnapshot(dc.getDocument());
                   for (MovieQuote mq : mMovieQuotes) {
                     if (mq.id.equals(modifiedQuote.id)) {
                       mq.quote = modifiedQuote.quote;
@@ -81,7 +78,6 @@ public class MovieQuoteAdapter extends RecyclerView.Adapter<MovieQuoteAdapter.Vi
                   break;
               }
             }
-
             Collections.sort(mMovieQuotes);
             notifyDataSetChanged();
           }
@@ -104,9 +100,9 @@ public class MovieQuoteAdapter extends RecyclerView.Adapter<MovieQuoteAdapter.Vi
   }
 
   public void remove(MovieQuote movieQuote) {
-    //TODO: Remove the next line(s) and use Firebase instead
-    mMovieQuotes.remove(movieQuote);
-    notifyDataSetChanged();
+//    mMovieQuotes.remove(movieQuote);
+//    notifyDataSetChanged();
+    mQuotesRef.document(movieQuote.id).delete();
   }
 
   @Override

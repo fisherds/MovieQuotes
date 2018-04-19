@@ -2,6 +2,7 @@ package edu.rosehulman.moviequotes;
 
 import android.support.annotation.NonNull;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.ServerTimestamp;
 
@@ -29,6 +30,12 @@ public class MovieQuote implements Comparable<MovieQuote> {
   public MovieQuote(String quote, String movie) {
     this.movie = movie;
     this.quote = quote;
+  }
+
+  public static MovieQuote covertSnapshot(DocumentSnapshot documentSnapshot) {
+    MovieQuote quote = documentSnapshot.toObject(MovieQuote.class);
+    quote.id = documentSnapshot.getId();
+    return quote;
   }
 
   public int compareTo(@NonNull MovieQuote o) {
